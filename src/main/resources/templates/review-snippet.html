@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Đánh giá sản phẩm | VShopee</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- ✅ Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container mt-5 flex-fill">
+    <h2 class="text-success mb-4">Đánh giá sản phẩm</h2>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Sản phẩm: <span th:text="${product.name}"></span></h5>
+
+            <div class="d-flex mb-3">
+                <div class="me-3">
+                    <strong>Đánh giá trung bình: </strong>
+                    <span class="badge bg-warning text-dark" th:text="${product.rating}">4.5</span>
+                </div>
+                <div>
+                    <strong>Giá sản phẩm: </strong>
+                    <span class="badge bg-success"
+                          th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + '₫'">200.000₫</span>
+                </div>
+            </div>
+
+            <p><strong>Chi tiết sản phẩm: </strong> <span th:text="${product.description}"></span></p>
+
+            <hr>
+            <h5>Đánh giá của khách hàng:</h5>
+
+            <div class="mb-3" th:each="review : ${reviews}">
+                <div class="d-flex justify-content-between">
+                    <h6 class="fw-bold" th:text="${review.user.username}">Người dùng</h6>
+                    <span class="badge bg-primary" th:text="${review.rating}">5</span>
+                </div>
+                <p th:text="${review.content}">Nội dung đánh giá</p>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h6 class="card-title">Viết đánh giá của bạn</h6>
+                    <form th:action="@{/review/submit}" method="post">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Đánh giá</label>
+                            <select class="form-select w-25" id="rating" name="rating" required>
+                                <option value="5">⭐️⭐️⭐️⭐️⭐️</option>
+                                <option value="4">⭐️⭐️⭐️⭐️</option>
+                                <option value="3">⭐️⭐️⭐️</option>
+                                <option value="2">⭐️⭐️</option>
+                                <option value="1">⭐️</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="content" class="form-label">Nội dung</label>
+                            <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Gửi đánh giá</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ✅ Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- ✅ Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

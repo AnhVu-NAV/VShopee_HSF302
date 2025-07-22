@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Thanh toán đơn hàng - VShopper</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- ✅ Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container mt-5 flex-fill">
+    <h2 class="text-success mb-4">💳 Thanh toán đơn hàng</h2>
+
+    <form th:action="@{/cart/confirm-payment}" method="post">
+        <div class="row">
+            <!-- Bên trái: Thông tin đơn hàng -->
+            <div class="col-md-7 mb-4">
+                <div class="card shadow-sm p-4">
+                    <h5 class="mb-3">Thông tin người nhận</h5>
+
+                    <div class="mb-3">
+                        <label for="fullname" class="form-label">Họ tên</label>
+                        <input type="text" class="form-control" id="fullname" name="fullname"
+                               th:value="${user.fullname}" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="phone" name="phone"
+                               th:value="${user.phone != null ? user.phone : ''}"
+                               placeholder="Nhập số điện thoại" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Địa chỉ giao hàng</label>
+                        <textarea class="form-control" id="address" name="address" rows="2"
+                                  placeholder="Nhập địa chỉ" required
+                                  th:text="${user.address != null ? user.address : ''}"></textarea>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="mb-3">Sản phẩm trong đơn hàng</h5>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            th:each="item : ${cartItems}">
+                            <div>
+                                <strong th:text="${item.product.name}">Tên sản phẩm</strong>
+                                <div class="text-muted small">x <span th:text="${item.quantity}">1</span></div>
+                            </div>
+                            <span th:text="${#numbers.formatDecimal(item.subtotal, 0, 'POINT', 0, 'COMMA')} + ' đ'">200.000 đ</span>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex justify-content-between">
+                        <span>Phí vận chuyển:</span>
+                        <strong class="text-success">Miễn phí</strong>
+                    </div>
+
+                    <div class="d-flex justify-content-between fs-5 mt-2">
+                        <span>Tổng cộng:</span>
+                        <strong th:text="${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')} + ' đ'">0 đ</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bên phải: QR và nút xác nhận -->
+            <div class="col-md-5 mb-4">
+                <div class="card shadow-sm p-4 text-center">
+                    <h5 class="mb-3">Quét mã VietQR để thanh toán</h5>
+                    <img th:src="${qrUrl}" alt="QR Thanh toán"
+                         class="img-fluid d-block mx-auto mb-3"
+                         style="max-width: 300px;">
+                    <p class="text-muted">Vui lòng chuyển đúng số tiền và ghi rõ nội dung thanh toán.</p>
+
+                    <input type="hidden" name="paymentMethod" value="VietQR">
+
+                    <button type="submit" class="btn btn-success btn-lg w-100">Xác nhận đã chuyển khoản</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+
+<!-- ✅ Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- ✅ Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

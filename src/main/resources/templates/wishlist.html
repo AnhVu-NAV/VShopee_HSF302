@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Yêu thích | VShopee</title>
+</head>
+
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- ✅ Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container mt-5 flex-fill">
+    <h2 class="text-success mb-4">💚 Danh sách sản phẩm yêu thích</h2>
+
+    <div th:if="${wishlist != null and #lists.isEmpty(wishlist)}">
+        <div class="alert alert-warning">Chưa có sản phẩm nào trong danh sách yêu thích.</div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${wishlist != null and !#lists.isEmpty(wishlist)}">
+        <div class="col" th:each="item : ${wishlist}">
+            <div class="card h-100 shadow-sm border-success">
+                <img th:src="@{${item.product.image}}" class="card-img-top" alt="Product Image">
+                <div class="card-body">
+                    <h5 class="card-title text-success" th:text="${item.product.name}"></h5>
+                    <p class="card-text text-muted" th:text="${item.product.description}"></p>
+                    <p class="fw-bold text-danger"
+                       th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">0 đ</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <form th:action="@{/wishlist/toggle}" method="post">
+                        <input type="hidden" name="productId" th:value="${item.product.id}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">🗑 Bỏ thích</button>
+                    </form>
+                    <a class="btn btn-success btn-sm" th:href="@{'/product/' + ${item.product.id}}">👁 Xem</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ✅ Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- ✅ Script -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!-- src/main/resources/templates/admin-brand.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Quản lý Thương hiệu - Admin</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4 flex-fill">
+    <h2 class="mb-4">📦 Quản lý Thương hiệu</h2>
+
+    <!-- Form thêm brand -->
+    <form th:action="@{/admin/brands/add}" method="post" class="row g-3 mb-4">
+        <div class="col-md-6">
+            <input type="text" name="name" class="form-control" placeholder="Tên thương hiệu" required>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success">➕ Thêm</button>
+        </div>
+    </form>
+
+    <!-- Bảng danh sách brand -->
+    <table class="table table-bordered table-striped">
+        <thead class="table-success">
+        <tr>
+            <th>ID</th>
+            <th>Tên thương hiệu</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="brand : ${brands}">
+            <td th:text="${brand.id}"></td>
+            <td th:text="${brand.name}"></td>
+            <td>
+                <a th:href="@{'/admin/brands/delete/' + ${brand.id}}" class="btn btn-sm btn-danger" onclick="return confirm('Xoá thương hiệu này?')">🗑 Xoá</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

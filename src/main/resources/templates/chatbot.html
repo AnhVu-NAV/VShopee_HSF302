@@ -1,0 +1,31 @@
+<div class="container mt-4">
+    <h3>💬 Chat với VShopee Bot</h3>
+    <div id="chat-box" style="height: 300px; overflow-y: auto;" class="border p-3 mb-3 bg-light"></div>
+
+    <div class="input-group">
+        <input id="messageInput" class="form-control" placeholder="Nhập câu hỏi..."/>
+        <button onclick="sendMessage()" class="btn btn-success">Gửi</button>
+    </div>
+</div>
+
+<script>
+    function sendMessage() {
+        const input = document.getElementById("messageInput");
+        const chatBox = document.getElementById("chat-box");
+
+        const userMessage = input.value;
+        chatBox.innerHTML += `<div><b>Bạn:</b> ${userMessage}</div>`;
+        input.value = "";
+
+        fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: userMessage })
+        })
+            .then(res => res.json())
+            .then(data => {
+                chatBox.innerHTML += `<div><b>Bot:</b> ${data.response}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+    }
+</script>

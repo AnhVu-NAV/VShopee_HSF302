@@ -1,0 +1,16 @@
+.card-title {
+    min-height: 3.5rem; /* để đảm bảo độ cao ổn định cho tiêu đề */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-img-top {
+    object-fit: contain;
+    height: 100%;
+}

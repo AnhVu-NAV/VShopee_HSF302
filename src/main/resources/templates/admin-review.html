@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Quản lý đánh giá</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container my-5 flex-fill">
+    <h2 class="text-success text-center mb-4">📝 Quản lý đánh giá sản phẩm</h2>
+
+    <div class="table-responsive bg-white shadow-sm rounded p-3">
+        <table class="table table-hover text-center align-middle">
+            <thead class="table-success">
+            <tr>
+                <th>ID</th>
+                <th>Sản phẩm</th>
+                <th>Người dùng</th>
+                <th>Số sao</th>
+                <th>Nội dung</th>
+                <th>Ngày</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review : ${reviews}">
+                <td th:text="${review.id}"></td>
+                <td th:text="${review.product != null ? review.product.name : 'Ẩn'}"></td>
+                <td th:text="${review.user != null ? review.user.fullname : 'Ẩn danh'}"></td>
+                <td>
+                    <span th:each="i : ${#numbers.sequence(1, review.rating)}">⭐</span>
+                </td>
+                <td th:text="${review.content}"></td>
+                <td th:text="${#dates.format(review.createdDate, 'dd/MM/yyyy')}"></td>
+                <td>
+                    <form th:action="@{'/admin/reviews/delete/' + ${review.id}}" method="post"
+                          onsubmit="return confirm('Bạn có chắc muốn xóa đánh giá này không?')">
+                        <button class="btn btn-sm btn-outline-danger">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

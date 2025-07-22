@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Quản lý sản phẩm - Admin | VShopee</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="flex-fill container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="text-success">Danh sách sản phẩm</h2>
+        <a href="/admin/products/new" class="btn btn-success">+ Thêm sản phẩm</a>
+    </div>
+
+    <table class="table table-hover table-bordered align-middle shadow-sm bg-white">
+        <thead class="table-success text-center">
+        <tr>
+            <th>#</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Thương hiệu</th>
+            <th>Kho</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product, iStat : ${products}" class="text-center">
+            <td th:text="${iStat.count}">1</td>
+            <td th:text="${product.name}">Áo thun</td>
+            <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">150000</td>
+            <td th:text="${product.brand.name}">Thời trang</td>
+            <td th:text="${product.stock}">50</td>
+            <td>
+                <a th:href="@{/admin/products/edit/{id}(id=${product.id})}" class="btn btn-sm btn-outline-success">Sửa</a>
+                <a th:href="@{/admin/products/delete/{id}(id=${product.id})}" class="btn btn-sm btn-outline-danger"
+                   onclick="return confirm('Bạn có chắc chắn xoá?')">Xoá</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<!-- Footer + Scripts -->
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

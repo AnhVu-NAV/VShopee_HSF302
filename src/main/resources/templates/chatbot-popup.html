@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        #chat-body .user-message {
+            background-color: #0d6efd;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 10px;
+            text-align: right;
+            margin-bottom: 6px;
+            max-width: 100%;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        #chat-body .bot-message {
+            background-color: #f1f1f1;
+            color: #000;
+            padding: 6px 10px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            max-width: 100%;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+<div th:fragment="popup">
+    <div id="chatbot-popup"
+         style="position: fixed; bottom: 80px; right: 20px; width: 300px; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; z-index: 9999;">
+        <div class="p-2 bg-success text-white d-flex justify-content-between align-items-center">
+            <span>💬 Chat với VShopper</span>
+            <button class="btn-close btn-close-white btn-sm" onclick="toggleChat()"></button>
+        </div>
+        <div id="chat-body" class="p-2"
+             style="height: 250px; overflow-y: auto; word-wrap: break-word; white-space: pre-wrap;"></div>
+        <form onsubmit="sendMessage(event)" class="d-flex p-2 border-top">
+            <input id="chat-input" class="form-control form-control-sm me-2" placeholder="Nhập tin nhắn..."/>
+            <button type="submit" class="btn btn-sm btn-success">Gửi</button>
+        </form>
+    </div>
+
+    <!-- Nút mở chat -->
+    <button onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;"
+            class="btn btn-success rounded-circle shadow">
+        💬
+    </button>
+</div>
+</body>
+</html>

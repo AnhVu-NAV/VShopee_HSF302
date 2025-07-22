@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Giỏ hàng</title>
+
+</head>
+<style>
+    .cart-table img {
+        width: 50px;
+        height: auto;
+        border-radius: 6px;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .quantity-input {
+        width: 80px;
+        text-align: center;
+    }
+
+    .cart-table th, .cart-table td {
+        vertical-align: middle !important;
+    }
+
+    .total-label {
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+
+    .total-price {
+        font-size: 1.5rem;
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    .update-btn {
+        min-width: 150px;
+    }
+
+    @media (max-width: 768px) {
+        .quantity-input {
+            width: 60px;
+        }
+
+        .update-btn, .checkout-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+</style>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- Navbar layout fragment -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4 flex-fill">
+    <h2 class="text-success mb-4 text-center">🛒 Giỏ hàng của bạn</h2>
+
+    <!-- Empty Cart Alert -->
+    <div th:if="${cartItems.isEmpty()}">
+        <div class="alert alert-warning text-center">Chưa có sản phẩm nào trong giỏ hàng.</div>
+    </div>
+
+    <!-- Cart Table -->
+    <div th:if="${!cartItems.isEmpty()}">
+        <div class="table-responsive">
+            <form th:action="@{/cart/update}" method="post">
+                <table class="table table-hover cart-table shadow-sm bg-white">
+                    <thead class="table-success text-center">
+                    <tr>
+                        <th>Hình ảnh</th>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${cartItems}" class="text-center">
+                        <td><img th:src="@{|${item.product.image}|}" alt="Ảnh sản phẩm"></td>
+                        <td th:text="${item.product.name}"></td>
+                        <td th:text="${#numbers.formatDecimal(item.product.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+                        <td>
+                            <input type="number" name="quantities" min="1" class="form-control quantity-input"
+                                   th:value="${item.quantity}">
+                            <input type="hidden" name="productIds" th:value="${item.product.id}">
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+                        <td>
+                            <form th:action="@{/cart/remove}" method="post" th:object="${item}" style="display:inline;">
+                                <input type="hidden" name="productId" th:value="${item.product.id}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Xóa sản phẩm">🗑</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="row align-items-center mt-4">
+                    <div class="col-md-6 text-start">
+                        <button class="btn btn-outline-primary update-btn" type="submit">🔄 Cập nhật giỏ hàng</button>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <span class="total-label">Tổng cộng:</span>
+                        <span class="total-price"
+                              th:text="${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')} + ' đ'">0 đ</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <form th:action="@{/cart/checkout}" method="get" class="text-end mt-4">
+<!--            <input type="hidden" name="method" value="QR"/>-->
+            <button type="submit" class="btn btn-success btn-lg checkout-btn">💳 Tiến hành đặt hàng</button>
+        </form>
+    </div>
+</main>
+
+<!-- Footer + Scripts -->
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+
+</body>
+</html>

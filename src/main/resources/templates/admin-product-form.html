@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Thêm/Sửa sản phẩm - Admin | VShopee</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="flex-fill container py-4">
+    <h2 class="text-success mb-4" th:text="${product.id == null} ? 'Thêm sản phẩm mới' : 'Chỉnh sửa sản phẩm'"></h2>
+
+    <form th:action="@{/admin/products/save}" th:object="${product}" method="post" enctype="multipart/form-data"
+          class="bg-white p-4 rounded shadow">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mb-3">
+            <label class="form-label">Tên sản phẩm</label>
+            <input type="text" class="form-control" th:field="*{name}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Giá</label>
+            <input type="number" class="form-control" th:field="*{price}" required min="0">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Số lượng kho</label>
+            <input type="number" class="form-control" th:field="*{stock}" required min="0">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Thương hiệu (Brand)</label>
+            <div class="input-group">
+                <select class="form-select" th:field="*{brand.id}">
+                    <option value="">-- Chọn thương hiệu có sẵn --</option>
+                    <option th:each="b : ${brands}" th:value="${b.id}" th:text="${b.name}"></option>
+                </select>
+                <input type="text" class="form-control" name="newBrandName" placeholder="hoặc nhập thương hiệu mới">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ảnh sản phẩm</label>
+            <input type="file" name="imageFile" class="form-control mb-2">
+            <input type="text" name="imageUrl" class="form-control"
+                   placeholder="hoặc dán link ảnh (URL)" th:value="${product.image}">
+        </div>
+
+        <div class="mb-3" th:if="${product.image}">
+            <label class="form-label">Ảnh hiện tại:</label><br>
+            <img th:src="@{${product.image}}" class="img-thumbnail" style="max-width: 200px;">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ngày phát hành</label>
+            <input type="date" class="form-control" th:field="*{releaseDate}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mô tả</label>
+            <textarea class="form-control" rows="5" th:field="*{description}"></textarea>
+        </div>
+
+        <div class="text-end">
+            <a href="/admin/products" class="btn btn-secondary">Huỷ</a>
+            <button type="submit" class="btn btn-success">Lưu</button>
+        </div>
+    </form>
+</main>
+
+<!-- Footer + Scripts -->
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Chi tiết đơn hàng</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="flex-fill container py-4">
+    <h2 class="text-success mb-4">Chi tiết đơn hàng</h2>
+
+    <div class="mb-3">
+        <strong>ID:</strong> <span th:text="${bill.id}"></span>
+    </div>
+    <div class="mb-3">
+        <strong>Khách hàng:</strong> <span th:text="${bill.user.fullname}"></span>
+    </div>
+    <div class="mb-3">
+        <strong>Tổng tiền:</strong> <span th:text="${#numbers.formatDecimal(bill.order.totalPrice, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></span>
+    </div>
+    <div class="mb-3">
+        <strong>Ngày đặt:</strong> <span th:text="${#dates.format(bill.createdDate, 'dd/MM/yyyy')}"></span>
+    </div>
+    <div class="mb-3">
+        <strong>Trạng thái:</strong> <span th:text="${bill.status}"></span>
+    </div>
+
+    <!-- 🛒 Danh sách sản phẩm -->
+    <h4 class="mt-4">Sản phẩm trong đơn</h4>
+    <table class="table table-bordered table-hover mt-3">
+        <thead class="table-success text-center">
+        <tr>
+            <th>#</th>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Thành tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detail, iterStat : ${bill.order.orderDetails}" class="text-center">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${detail.product.name}"></td>
+            <td th:text="${#numbers.formatDecimal(detail.price, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+            <td th:text="${detail.quantity}"></td>
+            <td th:text="${#numbers.formatDecimal(detail.price * detail.quantity, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin/orders}" class="btn btn-secondary mt-4">← Quay lại danh sách</a>
+</main>
+
+<!-- Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

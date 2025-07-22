@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Chi tiết đơn hàng - VShopper</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- ✅ Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container mt-5 flex-fill">
+    <h2 class="mb-4 text-success">
+        🧾 Chi tiết đơn hàng #<span th:text="${bill.id}"></span>
+    </h2>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <p><strong>Ngày đặt:</strong>
+                <span th:text="${#dates.format(bill.createdDate, 'dd/MM/yyyy')}"></span>
+            </p>
+            <p><strong>Trạng thái:</strong>
+                <span class="badge" th:classappend="${order.statusClass}" th:text="${order.statusText}"></span>
+            </p>
+            <p><strong>Phương thức thanh toán:</strong>
+                <span th:text="${bill.paymentMethod != null ? bill.paymentMethod : 'Chưa xác định'}"></span>
+            </p>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle shadow-sm bg-white">
+            <thead class="table-success text-center">
+            <tr>
+                <th>#</th>
+                <th>Tên sản phẩm</th>
+                <th>Đơn giá</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="od, stat : ${bill.order.orderDetails}" class="text-center">
+                <td th:text="${stat.count}"></td>
+                <td th:text="${od.product.name}"></td>
+                <td th:text="${#numbers.formatDecimal(od.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+                <td th:text="${od.quantity}"></td>
+                <td th:text="${#numbers.formatDecimal(od.price * od.quantity, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-end mt-3">
+        <h5>
+            Tổng cộng:
+            <span class="text-success fw-bold"
+                  th:text="${#numbers.formatDecimal(total, 0, 'POINT', 0, 'COMMA')} + ' đ'">
+            </span>
+        </h5>
+    </div>
+
+    <a class="btn btn-secondary mt-4" th:href="@{/my-orders}">⬅️ Quay lại danh sách đơn hàng</a>
+</main>
+
+<!-- ✅ Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- ✅ Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

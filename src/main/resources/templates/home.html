@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Trang chủ | VShopper</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-5 flex-fill">
+
+    <!-- Banner -->
+    <div class="mb-5">
+        <div class="bg-success text-white text-center rounded-4 py-5 px-3 shadow">
+            <h1 class="display-4 fw-bold">Chào mừng đến với VShopper 🛍</h1>
+            <p class="lead">Khám phá các sản phẩm hot nhất với giá ưu đãi hôm nay!</p>
+            <a th:href="@{/products}" class="btn btn-light btn-lg mt-3">Khám phá ngay</a>
+        </div>
+    </div>
+
+    <!-- Sản phẩm thịnh hành -->
+    <section class="mb-5">
+        <h2 class="text-success fw-bold mb-4">🔥 Sản phẩm thịnh hành</h2>
+        <div class="row g-4">
+            <div class="col-md-3" th:each="product : ${trendingProducts}">
+                <div class="card h-100 shadow-sm border-0">
+                    <img th:src="@{${product.image}}" class="card-img-top" alt="..." style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" th:text="${product.name}">Tên SP</h5>
+                        <p class="card-text text-success fw-bold mb-2" th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA')} + ' ₫'">0 ₫</p>
+                        <a th:href="@{/product/{id}(id=${product.id})}" class="btn btn-outline-success mt-auto">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Giá trị nổi bật -->
+    <section class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">💳 Thanh toán nhanh</h5>
+                    <p class="card-text">Hỗ trợ nhiều hình thức thanh toán tiện lợi và an toàn.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">🚚 Giao hàng toàn quốc</h5>
+                    <p class="card-text">Nhận hàng tận nơi, tốc độ và đúng hẹn.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">💬 Hỗ trợ 24/7</h5>
+                    <p class="card-text">Đội ngũ hỗ trợ nhiệt tình và nhanh chóng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

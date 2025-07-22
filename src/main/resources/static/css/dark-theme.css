@@ -1,0 +1,49 @@
+/* dark-theme.css */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.bg-dark {
+    background-color: #1e1e1e !important;
+}
+
+.text-light {
+    color: #e0e0e0 !important;
+}
+
+.navbar-light {
+    background-color: #2b2b2b !important;
+}
+
+a, .btn-link {
+    color: #90caf9;
+    transition: color 0.3s;
+}
+
+a:hover, .btn-link:hover {
+    color: #64b5f6;
+}
+
+.card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.form-control, .form-select {
+    background-color: #2c2c2c;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+.table {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+}

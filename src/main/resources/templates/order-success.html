@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Đặt hàng thành công - VShopper</title>
+</head>
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 80px auto;
+        padding: 40px;
+        background-color: #f8fdf5;
+        border: 2px solid #d1e7dd;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .success-icon {
+        font-size: 64px;
+        color: #28a745;
+    }
+
+    .btn-view-order {
+        font-size: 1.1rem;
+        padding: 10px 24px;
+    }
+</style>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- ✅ Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container flex-fill">
+    <div class="success-container text-center">
+        <div class="success-icon mb-3">✅</div>
+        <h2 class="text-success fw-bold">Đặt hàng thành công!</h2>
+        <p class="text-muted mt-2">Cảm ơn bạn đã mua sắm tại <strong>VShopper</strong> 💚<br>
+            Đơn hàng của bạn đã được ghi nhận và đang chờ xác nhận thanh toán.</p>
+
+        <a th:href="@{'/order/details/' + ${recentOrderId}}" class="btn btn-success btn-view-order mt-4">
+            📦 Xem chi tiết đơn hàng
+        </a>
+        <br/>
+        <a href="/" class="btn btn-link mt-3 text-decoration-none">🔙 Về trang chủ</a>
+    </div>
+</main>
+
+<!-- ✅ Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

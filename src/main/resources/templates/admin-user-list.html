@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Danh sách người dùng - Admin | VShopee</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="flex-fill container py-4">
+    <h2 class="text-success mb-4">Quản lý người dùng</h2>
+
+    <table class="table table-hover table-bordered align-middle shadow-sm bg-white">
+        <thead class="table-success text-center">
+        <tr>
+            <th>ID</th>
+            <th>Tên người dùng</th>
+            <th>Email</th>
+            <th>Vai trò</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}" class="text-center">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role.name}"></td>
+            <td>
+                <span th:text="${user.banned} ? 'Đã chặn' : 'Hoạt động'"
+                      th:classappend="${user.banned} ? 'text-danger' : 'text-success'"></span>
+            </td>
+            <td>
+                <form th:action="@{/admin/users/toggle-ban}" method="post" th:object="${user}">
+                    <input type="hidden" name="userId" th:value="${user.id}"/>
+                    <button type="submit"
+                            th:text="${user.banned} ? 'Bỏ chặn' : 'Chặn'"
+                            th:class="${user.banned} ? 'btn btn-sm btn-outline-success' : 'btn btn-sm btn-outline-danger'"></button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<!-- Footer + Scripts -->
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

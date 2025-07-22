@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Đơn hàng của bạn - VShopper</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- ✅ Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container mt-5 flex-fill">
+    <h2 class="mb-4 text-success">🧾 Đơn hàng của bạn</h2>
+
+    <div th:if="${orders != null and #lists.isEmpty(orders)}">
+        <div class="alert alert-info">Bạn chưa có đơn hàng nào.</div>
+    </div>
+
+    <div th:if="${orders != null and !#lists.isEmpty(orders)}">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle shadow-sm bg-white">
+                <thead class="table-success text-center">
+                <tr>
+                    <th>#</th>
+                    <th>Ngày đặt</th>
+                    <th>Thanh toán</th>
+                    <th>Trạng thái</th>
+                    <th>Tổng tiền</th>
+                    <th>Chi tiết</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="vm : ${orders}" class="text-center">
+                    <td th:text="${vm.bill.id}"></td>
+                    <td th:text="${#dates.format(vm.bill.createdDate, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${vm.bill.paymentMethod}"></td>
+                    <td>
+                        <span class="badge" th:classappend="${vm.statusClass}" th:text="${vm.statusText}"></span>
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(vm.bill.total, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+                    <td>
+                        <a th:href="@{/order/details/{id}(id=${vm.bill.id})}" class="btn btn-outline-success btn-sm">
+                            Chi tiết
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<!-- ✅ Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- ✅ Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

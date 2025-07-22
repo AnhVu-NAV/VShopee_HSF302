@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Đơn hàng của tôi | VShopee</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- ✅ Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container mt-5 flex-fill">
+    <h2 class="text-success mb-4">Đơn hàng của tôi</h2>
+
+    <!-- Danh sách đơn hàng -->
+    <div th:if="${!#lists.isEmpty(orders)}" class="list-group">
+        <div th:each="order : ${orders}" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1" th:text="${'Mã đơn hàng: ' + order.id}">Mã đơn hàng: 12345</h5>
+                <p class="mb-1" th:text="${'Ngày đặt: ' + #dates.format(order.createdDate, 'dd/MM/yyyy')}">Ngày đặt</p>
+                <p class="mb-1">
+                    Trạng thái:
+                    <span class="badge"
+                          th:classappend="${order.status.name() == 'PAID'} ? 'bg-success' :
+                                          (order.status.name() == 'CANCEL'} ? 'bg-danger' : 'bg-warning'"
+                          th:text="${order.status.name() == 'PAID'} ? 'Đã thanh toán' :
+                                   (order.status.name() == 'CANCEL'} ? 'Đã huỷ' : 'Đang xử lý'"></span>
+                </p>
+            </div>
+            <a th:href="@{/order/details/{id}(id=${order.id})}" class="btn btn-success btn-sm">Chi tiết</a>
+        </div>
+    </div>
+
+    <!-- Nếu không có đơn hàng -->
+    <div th:if="${#lists.isEmpty(orders)}" class="alert alert-warning mt-3">
+        Bạn chưa có đơn hàng nào.
+    </div>
+</main>
+
+<!-- ✅ Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- ✅ Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

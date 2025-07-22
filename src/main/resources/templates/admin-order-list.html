@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Quản lý đơn hàng - Admin | VShopee</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="flex-fill container py-4">
+    <h2 class="text-success mb-4">Quản lý đơn hàng</h2>
+
+    <table class="table table-hover table-bordered align-middle shadow-sm bg-white">
+        <thead class="table-success text-center">
+        <tr>
+            <th>ID</th>
+            <th>Người đặt</th>
+            <th>Tổng tiền</th>
+            <th>Phương thức thanh toán</th>
+            <th>Trạng thái</th>
+            <th>Ngày đặt</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bill : ${bills}" class="text-center">
+            <td th:text="${bill.id}"></td>
+            <td th:text="${bill.user.fullname}"></td>
+            <td><span th:text="${#numbers.formatDecimal(bill.order.totalPrice, 0, 'COMMA', 0, 'POINT') + ' ₫'}"></span></td>
+            <td th:text="${bill.paymentMethod}"></td>
+            <td>
+                <form th:action="@{'/admin/orders/update-status/' + ${bill.id}}" method="post" class="d-flex align-items-center gap-2">
+                    <select class="form-select form-select-sm" name="status" th:disabled="${bill.status.name() == 'DONE' || bill.status.name() == 'CANCEL' || bill.status.name() == 'PAID'}">
+                        <option th:each="s : ${T(com.hsf302.he186049.vshopee.enums.BillStatus).values()}"
+                                th:value="${s}" th:text="${s}"
+                                th:selected="${s == bill.status}">WAIT</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-outline-success"
+                            th:disabled="${bill.status.name() == 'DONE' || bill.status.name() == 'CANCEL' || bill.status.name() == 'PAID'}">
+                        Cập nhật
+                    </button>
+                </form>
+            </td>
+            <td th:text="${#dates.format(bill.createdDate, 'dd/MM/yyyy HH:mm')}"></td>
+            <td>
+                <a th:href="@{'/admin/orders/view/' + ${bill.id}}" class="btn btn-sm btn-outline-secondary mb-1">Chi tiết</a>
+
+                <!-- Nút chuyển tiếp trạng thái -->
+<!--                <a th:if="${bill.status.name() == 'WAIT' or bill.status.name() == 'PROCESS'}"-->
+<!--                   th:href="@{'/admin/orders/update-status/' + ${bill.id}}"-->
+<!--                   class="btn btn-sm btn-outline-primary mb-1">-->
+<!--                    Chuyển tiếp-->
+<!--                </a>-->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

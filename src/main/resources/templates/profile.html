@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Thông tin cá nhân | VShopper</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- ✅ Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<!-- ✅ Nội dung chính -->
+<main class="container py-5 flex-fill">
+    <h2 class="text-success mb-4">👤 Thông tin cá nhân</h2>
+
+    <form th:action="@{/profile/update}" th:object="${user}" method="post" class="bg-white p-4 rounded shadow-sm">
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <div class="mb-3">
+            <label class="form-label">Họ và tên</label>
+            <input type="text" class="form-control" th:field="*{fullname}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" th:field="*{email}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" th:field="*{phone}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" th:field="*{address}">
+        </div>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-success">💾 Cập nhật</button>
+        </div>
+    </form>
+</main>
+
+<!-- ✅ Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- ✅ Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>

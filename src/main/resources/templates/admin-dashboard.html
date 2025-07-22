@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Admin Dashboard - VShopee</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="container py-4 flex-fill">
+    <h2 class="text-success mb-4">Tổng Quan Quản Trị</h2>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-start border-5 border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Người dùng</h5>
+                    <p class="card-text fs-4" th:text="${userCount}">123</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-start border-5 border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Sản phẩm</h5>
+                    <p class="card-text fs-4" th:text="${productCount}">45</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-start border-5 border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Đơn hàng</h5>
+                    <p class="card-text fs-4" th:text="${orderCount}">78</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title text-center">Thống kê tổng quan</h5>
+            <canvas id="overviewChart" height="100"></canvas>
+        </div>
+    </div>
+
+    <!-- Các nút điều hướng -->
+    <div class="text-center mt-4">
+        <a href="/admin/products" class="btn btn-outline-success me-2">Quản lý sản phẩm</a>
+        <a href="/admin/users" class="btn btn-outline-success me-2">Quản lý người dùng</a>
+        <a href="/admin/orders" class="btn btn-outline-success">Quản lý đơn hàng</a>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer th:replace="~{layout :: footer}"></footer>
+
+<!-- Scripts -->
+<div th:replace="~{layout :: script}"></div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:inline="javascript">
+    const userCount = [[${userCount}]];
+    const productCount = [[${productCount}]];
+    const orderCount = [[${orderCount}]];
+
+    const ctx = document.getElementById('overviewChart');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Người dùng', 'Sản phẩm', 'Đơn hàng'],
+            datasets: [{
+                label: 'Tổng số',
+                data: [userCount, productCount, orderCount],
+                backgroundColor: ['#198754', '#20c997', '#0dcaf0']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { precision: 0 }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

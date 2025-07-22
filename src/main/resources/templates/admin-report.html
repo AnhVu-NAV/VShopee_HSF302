@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}">
+    <title>Báo cáo doanh thu - Admin | VShopee</title>
+</head>
+<body id="page-body" class="bg-light text-dark d-flex flex-column min-vh-100">
+
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="flex-fill container py-4">
+    <h2 class="text-success mb-4">📈 Báo cáo doanh thu</h2>
+
+    <!-- Bộ lọc -->
+    <form class="row g-3 mb-3" method="get" action="/admin/report">
+        <div class="col-md-3">
+            <label for="fromDate" class="form-label">Từ ngày</label>
+            <input type="date" id="fromDate" name="fromDate" class="form-control" th:value="${fromDate}">
+        </div>
+        <div class="col-md-3">
+            <label for="toDate" class="form-label">Đến ngày</label>
+            <input type="date" id="toDate" name="toDate" class="form-control" th:value="${toDate}">
+        </div>
+        <div class="col-md-3">
+            <label for="month" class="form-label">Hoặc chọn tháng</label>
+            <input type="month" id="month" name="month" class="form-control" th:value="${month}">
+        </div>
+        <div class="col-md-3 align-self-end d-flex gap-2">
+            <button type="submit" class="btn btn-success flex-fill">🔍 Xem báo cáo</button>
+            <a th:href="@{'/admin/export/pdf'(date=${fromDate}, month=${month})}" class="btn btn-outline-danger" target="_blank">📄 PDF</a>
+            <a th:href="@{'/admin/export/excel'(date=${fromDate}, month=${month})}" class="btn btn-outline-primary" target="_blank">📊 Excel</a>
+        </div>
+    </form>
+
+    <!-- Tổng doanh thu -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title text-success">Tổng doanh thu</h5>
+            <p class="fs-4 fw-bold" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</p>
+        </div>
+    </div>
+
+    <!-- Bảng chi tiết -->
+    <table class="table table-bordered table-striped shadow-sm text-center">
+        <thead class="table-success">
+        <tr>
+            <th>Ngày</th>
+            <th>Số đơn hàng</th>
+            <th>Tổng tiền</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="report : ${dailyReports}">
+            <td th:text="${#temporals.format(report.date, 'dd/MM/yyyy')}">--</td>
+            <td th:text="${report.orderCount}">0</td>
+            <td th:text="${#numbers.formatDecimal(report.totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: script}"></div>
+
+</body>
+</html>
