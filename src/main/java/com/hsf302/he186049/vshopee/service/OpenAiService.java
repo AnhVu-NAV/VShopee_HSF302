@@ -29,7 +29,7 @@ public class OpenAiService {
 
     private static final String API_URL = "https://api.openai.com/v1/chat/completions";
 
-    private final String apiKey = "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"; // Hoặc inject từ @Value như cũ nếu đã hoạt động
+    private final String apiKey = ""; // Hoặc inject từ @Value như cũ nếu đã hoạt động
     private final ProductRepository productRepository;
     private final CartService cartService;
     private final HttpSession session;
